@@ -1,192 +1,212 @@
+import { Megaphone, DollarSign, Eye, Target } from "lucide-react";
 import StatsCard from "@/components/StatsCard";
-import { 
-  Megaphone, 
-  DollarSign, 
-  Eye, 
-  TrendingUp,
-  Plus,
-  MessageSquare,
-  Users,
-  Calendar,
-  FileText,
-  BarChart3
-} from "lucide-react";
 
 export default function DashboardPage() {
-  const recentActivity = [
-    {
-      id: 1,
-      type: "campaign",
-      title: "Summer Collection Campaign approved",
-      time: "2 hours ago",
-      icon: <Megaphone className="w-5 h-5 text-green" />
-    },
-    {
-      id: 2,
-      type: "payment",
-      title: "Payment of $2,450 processed",
-      time: "5 hours ago",
-      icon: <DollarSign className="w-5 h-5 text-cyan" />
-    },
-    {
-      id: 3,
-      type: "contract",
-      title: "New contract from TechStart received",
-      time: "1 day ago",
-      icon: <FileText className="w-5 h-5 text-accent" />
-    },
-    {
-      id: 4,
-      type: "message",
-      title: "Message from Sarah about Q2 campaign",
-      time: "2 days ago",
-      icon: <MessageSquare className="w-5 h-5 text-gray-400" />
-    }
-  ];
+  const today = new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
 
-  const quickActions = [
+  const mockCampaigns = [
     {
-      title: "New Campaign",
-      description: "Launch a new influencer campaign",
-      icon: <Plus className="w-6 h-6" />,
-      href: "/dashboard/campaigns/new",
-      color: "bg-accent"
+      campaign: "Summer Fashion Collection",
+      influencer: "Sarah Johnson",
+      status: "active",
+      budget: "$5,000",
+      impressions: "127K",
+      roi: "+24.3%"
     },
     {
-      title: "Find Influencers",
-      description: "Browse our network of creators",
-      icon: <Users className="w-6 h-6" />,
-      href: "/dashboard/influencers",
-      color: "bg-cyan"
+      campaign: "Tech Product Launch",
+      influencer: "Mike Chen",
+      status: "pending",
+      budget: "$3,200",
+      impressions: "89K",
+      roi: "+18.7%"
     },
     {
-      title: "Schedule Meeting",
-      description: "Book a call with potential partners",
-      icon: <Calendar className="w-6 h-6" />,
-      href: "/dashboard/meetings",
-      color: "bg-green"
+      campaign: "Travel Adventure Series",
+      influencer: "Emma Davis",
+      status: "completed",
+      budget: "$2,800",
+      impressions: "156K",
+      roi: "+31.2%"
     },
     {
-      title: "View Analytics",
-      description: "Deep dive into performance metrics",
-      icon: <BarChart3 className="w-6 h-6" />,
-      href: "/dashboard/analytics",
-      color: "bg-purple-600"
+      campaign: "Fitness Challenge",
+      influencer: "Alex Rodriguez",
+      status: "active",
+      budget: "$4,500",
+      impressions: "203K",
+      roi: "+27.8%"
+    },
+    {
+      campaign: "Food & Recipe Content",
+      influencer: "Lisa Thompson",
+      status: "completed",
+      budget: "$1,900",
+      impressions: "98K",
+      roi: "+22.1%"
     }
   ];
 
   return (
-    <div>
-      {/* Welcome Header */}
+    <div className="space-y-6">
+      {/* Welcome Section */}
       <div className="mb-8">
-        <h1 className="text-3xl font-serif font-bold mb-2">
-          Good morning, John!
+        <h1 className="text-3xl font-bold text-slate-800 mb-2">
+          Welcome back, John!
         </h1>
-        <p className="text-gray-400">
-          Here&apos;s what&apos;s happening with your campaigns today.
+        <p className="text-gray-600">
+          Here's what's happening with your campaigns today, {today}
         </p>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      {/* Stats Cards Row */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatsCard
-          icon={<Megaphone className="w-6 h-6" />}
-          label="Active Campaigns"
+          title="Active Campaigns"
           value="12"
-          trend={{ value: "+2 this month", positive: true }}
+          icon={Megaphone}
+          iconColor="text-brand-purple"
+          iconBgColor="bg-brand-purple-light"
+          trend={{ value: 8.2, isPositive: true }}
         />
         <StatsCard
-          icon={<DollarSign className="w-6 h-6" />}
-          label="Total Earnings"
+          title="Total Earnings"
           value="$24,580"
-          trend={{ value: "+18% vs last month", positive: true }}
+          icon={DollarSign}
+          iconColor="text-green-600"
+          iconBgColor="bg-green-100"
+          trend={{ value: 12.5, isPositive: true }}
         />
         <StatsCard
-          icon={<Eye className="w-6 h-6" />}
-          label="Total Impressions"
-          value="2.4M"
-          trend={{ value: "+12% this week", positive: true }}
+          title="Impressions"
+          value="1.2M"
+          icon={Eye}
+          iconColor="text-blue-600"
+          iconBgColor="bg-blue-100"
+          trend={{ value: 5.1, isPositive: true }}
         />
         <StatsCard
-          icon={<TrendingUp className="w-6 h-6" />}
-          label="Conversion Rate"
-          value="3.2%"
-          trend={{ value: "-0.3% vs last month", positive: false }}
+          title="Conversion Rate"
+          value="3.24%"
+          icon={Target}
+          iconColor="text-amber-600"
+          iconBgColor="bg-amber-100"
+          trend={{ value: 2.3, isPositive: false }}
         />
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        {/* Recent Activity */}
-        <div className="lg:col-span-2">
-          <div className="bg-surface border border-border rounded-lg p-6">
-            <h2 className="text-xl font-serif font-semibold mb-6">Recent Activity</h2>
-            
-            <div className="space-y-4">
-              {recentActivity.map((activity) => (
-                <div key={activity.id} className="flex items-center space-x-4 p-4 bg-surface-2 rounded-lg">
-                  <div className="flex-shrink-0">
-                    {activity.icon}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium">{activity.title}</p>
-                    <p className="text-xs text-gray-400">{activity.time}</p>
-                  </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Reports Chart Section */}
+        <div className="card">
+          <div className="card-content">
+            <h3 className="text-lg font-semibold text-slate-800 mb-4">
+              Campaign Performance
+            </h3>
+            {/* Chart Placeholder */}
+            <div className="h-64 bg-gradient-to-br from-brand-purple-light to-blue-100 rounded-lg flex items-center justify-center">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-brand-purple mb-2">📈</div>
+                <div className="text-sm text-gray-600">
+                  Interactive chart showing campaign performance over time
                 </div>
-              ))}
+              </div>
             </div>
-
-            <button className="w-full mt-6 text-accent hover:text-accent/80 text-sm font-medium">
-              View All Activity
-            </button>
+            <div className="mt-4 flex items-center justify-between text-sm text-gray-600">
+              <span>Last 30 days</span>
+              <span className="text-green-600 font-medium">↗ +15.2% growth</span>
+            </div>
           </div>
         </div>
 
-        {/* Quick Actions */}
-        <div>
-          <div className="bg-surface border border-border rounded-lg p-6">
-            <h2 className="text-xl font-serif font-semibold mb-6">Quick Actions</h2>
-            
-            <div className="space-y-4">
-              {quickActions.map((action, index) => (
-                <a
-                  key={index}
-                  href={action.href}
-                  className="flex items-center space-x-4 p-4 bg-surface-2 rounded-lg hover:bg-surface-2/80 transition-colors group"
-                >
-                  <div className={`flex-shrink-0 p-2 rounded-lg ${action.color} text-white group-hover:scale-110 transition-transform`}>
-                    {action.icon}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium">{action.title}</p>
-                    <p className="text-xs text-gray-400">{action.description}</p>
-                  </div>
-                </a>
-              ))}
+        {/* Analytics Section */}
+        <div className="card">
+          <div className="card-content">
+            <h3 className="text-lg font-semibold text-slate-800 mb-4">
+              Campaign Distribution
+            </h3>
+            {/* Donut Chart Placeholder */}
+            <div className="h-64 bg-gradient-to-br from-green-100 to-brand-purple-light rounded-lg flex items-center justify-center">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-brand-purple mb-2">🥧</div>
+                <div className="text-sm text-gray-600">
+                  Donut chart showing campaign distribution by category
+                </div>
+              </div>
+            </div>
+            <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-brand-purple rounded-full"></div>
+                <span className="text-gray-600">Fashion (40%)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                <span className="text-gray-600">Tech (25%)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                <span className="text-gray-600">Travel (20%)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-amber-500 rounded-full"></div>
+                <span className="text-gray-600">Food (15%)</span>
+              </div>
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Quick Stats */}
-          <div className="mt-6 bg-surface border border-border rounded-lg p-6">
-            <h3 className="text-lg font-serif font-semibold mb-4">This Week</h3>
-            
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Campaign Views</span>
-                <span className="font-semibold">45.2K</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">New Followers</span>
-                <span className="font-semibold text-green">+1,234</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Engagement Rate</span>
-                <span className="font-semibold">4.8%</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Revenue</span>
-                <span className="font-semibold text-accent">$3,890</span>
-              </div>
-            </div>
+      {/* Recent Campaigns Table */}
+      <div className="card">
+        <div className="card-content">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-slate-800">
+              Recent Campaigns
+            </h3>
+            <button className="text-sm text-brand-purple hover:text-brand-purple-dark font-medium">
+              View all
+            </button>
+          </div>
+          
+          <div className="overflow-x-auto">
+            <table className="min-w-full">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">Campaign</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">Influencer</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">Status</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">Budget</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">Impressions</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">ROI</th>
+                </tr>
+              </thead>
+              <tbody>
+                {mockCampaigns.map((campaign, index) => (
+                  <tr key={index} className="border-b border-gray-200 last:border-b-0">
+                    <td className="py-4 px-4">
+                      <div className="font-medium text-slate-800">{campaign.campaign}</div>
+                    </td>
+                    <td className="py-4 px-4">
+                      <div className="text-gray-600">{campaign.influencer}</div>
+                    </td>
+                    <td className="py-4 px-4">
+                      <span className={`status-badge ${campaign.status}`}>
+                        {campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1)}
+                      </span>
+                    </td>
+                    <td className="py-4 px-4 text-gray-600">{campaign.budget}</td>
+                    <td className="py-4 px-4 text-gray-600">{campaign.impressions}</td>
+                    <td className="py-4 px-4">
+                      <span className="text-green-600 font-medium">{campaign.roi}</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

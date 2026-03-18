@@ -1,278 +1,444 @@
-import { Camera, Bell, Shield, CreditCard, Globe, User } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { User, Building, CreditCard, Bell, Shield, Save } from "lucide-react";
 
 export default function SettingsPage() {
-  return (
-    <div>
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-serif font-bold mb-2">Settings</h1>
-        <p className="text-gray-400">Manage your account preferences and settings</p>
+  const [activeTab, setActiveTab] = useState("profile");
+
+  const tabs = [
+    { id: "profile", label: "Profile", icon: User },
+    { id: "company", label: "Company & Billing", icon: Building },
+    { id: "notifications", label: "Notifications", icon: Bell },
+    { id: "security", label: "Security", icon: Shield },
+  ];
+
+  const ProfileSettings = () => (
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-lg font-semibold text-slate-800 mb-4">
+          Personal Information
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-slate-800 mb-2">
+              First Name
+            </label>
+            <input
+              type="text"
+              className="form-input"
+              defaultValue="John"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-800 mb-2">
+              Last Name
+            </label>
+            <input
+              type="text"
+              className="form-input"
+              defaultValue="Doe"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-800 mb-2">
+              Email Address
+            </label>
+            <input
+              type="email"
+              className="form-input"
+              defaultValue="john.doe@company.com"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-800 mb-2">
+              Phone Number
+            </label>
+            <input
+              type="tel"
+              className="form-input"
+              defaultValue="+1 (555) 123-4567"
+            />
+          </div>
+        </div>
       </div>
 
-      <div className="space-y-8">
-        {/* Profile Section */}
-        <div className="bg-surface border border-border rounded-lg p-6">
-          <div className="flex items-center space-x-4 mb-6">
-            <User className="w-6 h-6 text-accent" />
-            <h2 className="text-xl font-serif font-semibold">Profile Information</h2>
+      <div>
+        <h3 className="text-lg font-semibold text-slate-800 mb-4">
+          Profile Photo
+        </h3>
+        <div className="flex items-center gap-4">
+          <div className="w-16 h-16 bg-brand-purple-light rounded-full flex items-center justify-center">
+            <User className="w-8 h-8 text-brand-purple" />
           </div>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  defaultValue="John Doe"
-                  className="w-full bg-surface-2 border border-border rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-accent"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  defaultValue="john@example.com"
-                  className="w-full bg-surface-2 border border-border rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-accent"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  defaultValue="+1 (555) 123-4567"
-                  className="w-full bg-surface-2 border border-border rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-accent"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Bio
-                </label>
-                <textarea
-                  rows={4}
-                  defaultValue="Passionate content creator and brand strategist with 5+ years of experience in digital marketing."
-                  className="w-full bg-surface-2 border border-border rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-accent"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Profile Picture
-              </label>
-              <div className="bg-surface-2 border border-border rounded-lg p-6 text-center">
-                <div className="bg-accent/10 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <User className="w-12 h-12 text-accent" />
-                </div>
-                <button className="flex items-center space-x-2 bg-accent text-white px-4 py-2 rounded-lg font-medium hover:bg-accent/90 transition-colors mx-auto">
-                  <Camera className="w-4 h-4" />
-                  <span>Upload Photo</span>
-                </button>
-                <p className="text-sm text-gray-400 mt-2">
-                  JPG, PNG up to 5MB
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex space-x-4 mt-6 pt-6 border-t border-border">
-            <button className="bg-accent text-white px-6 py-3 rounded-lg font-semibold hover:bg-accent/90 transition-colors">
-              Save Changes
+          <div>
+            <button className="btn-primary px-4 py-2 text-sm mb-2">
+              Upload Photo
             </button>
-            <button className="border border-border text-gray-300 px-6 py-3 rounded-lg font-semibold hover:bg-surface-2 transition-colors">
-              Cancel
-            </button>
+            <p className="text-xs text-gray-400">
+              JPG, PNG, or GIF. Max size 5MB.
+            </p>
           </div>
         </div>
+      </div>
 
-        {/* Notification Settings */}
-        <div className="bg-surface border border-border rounded-lg p-6">
-          <div className="flex items-center space-x-4 mb-6">
-            <Bell className="w-6 h-6 text-cyan" />
-            <h2 className="text-xl font-serif font-semibold">Notification Preferences</h2>
+      <div>
+        <h3 className="text-lg font-semibold text-slate-800 mb-4">
+          Bio & Description
+        </h3>
+        <textarea
+          className="form-input min-h-[100px] resize-none"
+          placeholder="Tell us about yourself and your expertise..."
+          defaultValue="Experienced marketing professional with 8+ years in influencer partnerships and brand collaborations."
+        />
+      </div>
+    </div>
+  );
+
+  const CompanySettings = () => (
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-lg font-semibold text-slate-800 mb-4">
+          Company Information
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-slate-800 mb-2">
+              Company Name
+            </label>
+            <input
+              type="text"
+              className="form-input"
+              defaultValue="Acme Corporation"
+            />
           </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-800 mb-2">
+              Industry
+            </label>
+            <select className="form-input">
+              <option>Technology</option>
+              <option>Fashion & Beauty</option>
+              <option>Travel & Lifestyle</option>
+              <option>Food & Beverage</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-800 mb-2">
+              Company Size
+            </label>
+            <select className="form-input">
+              <option>1-10 employees</option>
+              <option>11-50 employees</option>
+              <option>51-200 employees</option>
+              <option>200+ employees</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-800 mb-2">
+              Website
+            </label>
+            <input
+              type="url"
+              className="form-input"
+              defaultValue="https://acmecorp.com"
+            />
+          </div>
+        </div>
+      </div>
 
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-semibold mb-1">Campaign Updates</h3>
-                <p className="text-sm text-gray-400">Get notified about campaign status changes</p>
-              </div>
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" defaultChecked />
-                <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent"></div>
+      <div>
+        <h3 className="text-lg font-semibold text-slate-800 mb-4">
+          Billing Address
+        </h3>
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-slate-800 mb-2">
+              Street Address
+            </label>
+            <input
+              type="text"
+              className="form-input"
+              defaultValue="123 Business Ave"
+            />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-800 mb-2">
+                City
               </label>
+              <input
+                type="text"
+                className="form-input"
+                defaultValue="San Francisco"
+              />
             </div>
-
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-semibold mb-1">Payment Notifications</h3>
-                <p className="text-sm text-gray-400">Receive alerts for payments and payouts</p>
-              </div>
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" defaultChecked />
-                <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent"></div>
+            <div>
+              <label className="block text-sm font-medium text-slate-800 mb-2">
+                State
               </label>
+              <input
+                type="text"
+                className="form-input"
+                defaultValue="CA"
+              />
             </div>
-
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-semibold mb-1">New Opportunities</h3>
-                <p className="text-sm text-gray-400">Get notified about new partnership opportunities</p>
-              </div>
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" />
-                <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent"></div>
+            <div>
+              <label className="block text-sm font-medium text-slate-800 mb-2">
+                ZIP Code
               </label>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-semibold mb-1">Marketing Emails</h3>
-                <p className="text-sm text-gray-400">Receive platform updates and marketing materials</p>
-              </div>
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" defaultChecked />
-                <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent"></div>
-              </label>
+              <input
+                type="text"
+                className="form-input"
+                defaultValue="94103"
+              />
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Billing Settings */}
-        <div className="bg-surface border border-border rounded-lg p-6">
-          <div className="flex items-center space-x-4 mb-6">
-            <CreditCard className="w-6 h-6 text-green" />
-            <h2 className="text-xl font-serif font-semibold">Billing Information</h2>
-          </div>
-
-          <div className="space-y-6">
-            <div>
-              <h3 className="font-semibold mb-4">Payment Methods</h3>
-              <div className="bg-surface-2 border border-border rounded-lg p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="bg-accent/10 p-2 rounded">
-                      <CreditCard className="w-5 h-5 text-accent" />
-                    </div>
-                    <div>
-                      <p className="font-medium">Wells Fargo ****1234</p>
-                      <p className="text-sm text-gray-400">Expires 12/25</p>
-                    </div>
+      <div>
+        <h3 className="text-lg font-semibold text-slate-800 mb-4">
+          Payment Methods
+        </h3>
+        <div className="space-y-4">
+          <div className="p-4 border border-gray-200 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <CreditCard className="w-5 h-5 text-gray-400" />
+                <div>
+                  <div className="font-medium text-slate-800">
+                    •••• •••• •••• 4242
                   </div>
-                  <span className="px-3 py-1 bg-green/10 text-green border border-green/20 rounded-full text-xs">
-                    Primary
-                  </span>
+                  <div className="text-sm text-gray-400">
+                    Visa ending in 4242 • Expires 12/25
+                  </div>
                 </div>
               </div>
-              <button className="mt-4 text-accent hover:text-accent/80 font-medium">
-                + Add New Payment Method
-              </button>
-            </div>
-
-            <div>
-              <h3 className="font-semibold mb-4">Billing Address</h3>
-              <div className="grid md:grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  placeholder="Address Line 1"
-                  className="bg-surface-2 border border-border rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-accent"
-                />
-                <input
-                  type="text"
-                  placeholder="Address Line 2"
-                  className="bg-surface-2 border border-border rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-accent"
-                />
-                <input
-                  type="text"
-                  placeholder="City"
-                  className="bg-surface-2 border border-border rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-accent"
-                />
-                <input
-                  type="text"
-                  placeholder="ZIP Code"
-                  className="bg-surface-2 border border-border rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-accent"
-                />
+              <div className="flex items-center gap-2">
+                <span className="text-xs px-2 py-1 bg-green-100 text-green-800 rounded">Default</span>
+                <button className="btn-secondary px-3 py-1 text-sm">Edit</button>
               </div>
             </div>
+          </div>
+          <button className="btn-secondary px-4 py-2 text-sm">
+            Add Payment Method
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  const NotificationSettings = () => (
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-lg font-semibold text-slate-800 mb-4">
+          Email Notifications
+        </h3>
+        <div className="space-y-4">
+          {[
+            { label: "Campaign Updates", description: "Get notified when campaigns start, complete, or need attention", enabled: true },
+            { label: "Payment Notifications", description: "Receive alerts about payments, invoices, and billing", enabled: true },
+            { label: "New Messages", description: "Notifications for new messages from influencers or team members", enabled: true },
+            { label: "Weekly Summary", description: "Weekly reports on campaign performance and earnings", enabled: false },
+            { label: "Marketing Emails", description: "Product updates, tips, and promotional content", enabled: false },
+          ].map((item, index) => (
+            <div key={index} className="flex items-start justify-between p-4 border border-gray-200 rounded-lg">
+              <div className="flex-1">
+                <div className="font-medium text-slate-800 mb-1">
+                  {item.label}
+                </div>
+                <div className="text-sm text-gray-600">
+                  {item.description}
+                </div>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer ml-4">
+                <input type="checkbox" defaultChecked={item.enabled} className="sr-only peer" />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-purple"></div>
+              </label>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h3 className="text-lg font-semibold text-slate-800 mb-4">
+          Push Notifications
+        </h3>
+        <div className="space-y-4">
+          {[
+            { label: "Browser Notifications", description: "Show notifications in your browser", enabled: true },
+            { label: "Mobile Push", description: "Receive push notifications on your mobile device", enabled: false },
+          ].map((item, index) => (
+            <div key={index} className="flex items-start justify-between p-4 border border-gray-200 rounded-lg">
+              <div className="flex-1">
+                <div className="font-medium text-slate-800 mb-1">
+                  {item.label}
+                </div>
+                <div className="text-sm text-gray-600">
+                  {item.description}
+                </div>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer ml-4">
+                <input type="checkbox" defaultChecked={item.enabled} className="sr-only peer" />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-purple"></div>
+              </label>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  const SecuritySettings = () => (
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-lg font-semibold text-slate-800 mb-4">
+          Password & Authentication
+        </h3>
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-slate-800 mb-2">
+              Current Password
+            </label>
+            <input
+              type="password"
+              className="form-input"
+              placeholder="Enter current password"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-800 mb-2">
+              New Password
+            </label>
+            <input
+              type="password"
+              className="form-input"
+              placeholder="Enter new password"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-800 mb-2">
+              Confirm New Password
+            </label>
+            <input
+              type="password"
+              className="form-input"
+              placeholder="Confirm new password"
+            />
           </div>
         </div>
+      </div>
 
-        {/* Security Settings */}
-        <div className="bg-surface border border-border rounded-lg p-6">
-          <div className="flex items-center space-x-4 mb-6">
-            <Shield className="w-6 h-6 text-red-400" />
-            <h2 className="text-xl font-serif font-semibold">Security</h2>
-          </div>
-
-          <div className="space-y-6">
+      <div>
+        <h3 className="text-lg font-semibold text-slate-800 mb-4">
+          Two-Factor Authentication
+        </h3>
+        <div className="p-4 border border-gray-200 rounded-lg">
+          <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-semibold mb-4">Password</h3>
-              <div className="space-y-4">
-                <input
-                  type="password"
-                  placeholder="Current Password"
-                  className="w-full bg-surface-2 border border-border rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-accent"
-                />
-                <input
-                  type="password"
-                  placeholder="New Password"
-                  className="w-full bg-surface-2 border border-border rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-accent"
-                />
-                <input
-                  type="password"
-                  placeholder="Confirm New Password"
-                  className="w-full bg-surface-2 border border-border rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-accent"
-                />
+              <div className="font-medium text-slate-800 mb-1">
+                Authenticator App
               </div>
-              <button className="mt-4 bg-accent text-white px-6 py-3 rounded-lg font-semibold hover:bg-accent/90 transition-colors">
-                Update Password
-              </button>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-semibold mb-1">Two-Factor Authentication</h3>
-                <p className="text-sm text-gray-400">Add an extra layer of security to your account</p>
+              <div className="text-sm text-gray-600">
+                Use an authenticator app to generate verification codes
               </div>
-              <button className="bg-cyan text-white px-4 py-2 rounded-lg font-medium hover:bg-cyan/90 transition-colors">
-                Enable 2FA
-              </button>
             </div>
+            <button className="btn-primary px-4 py-2 text-sm">
+              Enable
+            </button>
           </div>
         </div>
+      </div>
 
-        {/* Danger Zone */}
-        <div className="bg-red-900/10 border border-red-900/30 rounded-lg p-6">
-          <h2 className="text-xl font-serif font-semibold text-red-400 mb-6">Danger Zone</h2>
-          
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
+      <div>
+        <h3 className="text-lg font-semibold text-slate-800 mb-4">
+          Recent Activity
+        </h3>
+        <div className="space-y-3">
+          {[
+            { action: "Signed in from new device", location: "San Francisco, CA", time: "2 hours ago" },
+            { action: "Changed password", location: "San Francisco, CA", time: "3 days ago" },
+            { action: "Updated profile information", location: "San Francisco, CA", time: "1 week ago" },
+          ].map((activity, index) => (
+            <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
               <div>
-                <h3 className="font-semibold text-red-400 mb-1">Deactivate Account</h3>
-                <p className="text-sm text-gray-400">Temporarily disable your account</p>
+                <div className="font-medium text-slate-800">
+                  {activity.action}
+                </div>
+                <div className="text-sm text-gray-400">
+                  {activity.location} • {activity.time}
+                </div>
               </div>
-              <button className="border border-red-400 text-red-400 px-4 py-2 rounded-lg font-medium hover:bg-red-400/10 transition-colors">
-                Deactivate
-              </button>
             </div>
-            
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-semibold text-red-400 mb-1">Delete Account</h3>
-                <p className="text-sm text-gray-400">Permanently delete your account and all data</p>
-              </div>
-              <button className="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition-colors">
-                Delete Account
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case "profile":
+        return <ProfileSettings />;
+      case "company":
+        return <CompanySettings />;
+      case "notifications":
+        return <NotificationSettings />;
+      case "security":
+        return <SecuritySettings />;
+      default:
+        return <ProfileSettings />;
+    }
+  };
+
+  return (
+    <div className="max-w-6xl mx-auto space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-3xl font-bold text-slate-800 mb-2">
+          Settings
+        </h1>
+        <p className="text-gray-600">
+          Manage your account settings and preferences
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {/* Settings Navigation */}
+        <div className="lg:col-span-1">
+          <nav className="space-y-2">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                  activeTab === tab.id
+                    ? "bg-brand-purple text-white"
+                    : "text-gray-600 hover:text-slate-800 hover:bg-gray-50"
+                }`}
+              >
+                <tab.icon className="w-5 h-5" />
+                <span className="font-medium">{tab.label}</span>
               </button>
+            ))}
+          </nav>
+        </div>
+
+        {/* Settings Content */}
+        <div className="lg:col-span-3">
+          <div className="card">
+            <div className="card-content">
+              {renderTabContent()}
+              
+              {/* Save Button */}
+              <div className="flex items-center justify-end pt-6 mt-6 border-t border-gray-200">
+                <button className="btn-primary px-6 py-2 flex items-center gap-2">
+                  <Save className="w-4 h-4" />
+                  Save Changes
+                </button>
+              </div>
             </div>
           </div>
         </div>

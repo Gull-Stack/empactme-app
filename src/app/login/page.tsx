@@ -1,92 +1,118 @@
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
-import { Mail, Lock } from "lucide-react";
+import { Mail } from "lucide-react";
 
 export default function LoginPage() {
   return (
-    <main className="min-h-screen bg-background">
-      <Navbar />
-      
-      <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] px-4">
-        <div className="w-full max-w-md">
-          <div className="bg-surface border border-border rounded-xl p-8">
-            <div className="text-center mb-8">
-              <h1 className="text-3xl font-serif font-bold mb-2">Welcome Back</h1>
-              <p className="text-gray-400">Sign in to your EmpactMe account</p>
-            </div>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        {/* Header */}
+        <div className="text-center">
+          <Link href="/" className="inline-block">
+            <span className="text-3xl font-bold text-brand-purple">EmpactMe</span>
+          </Link>
+          <h2 className="mt-6 text-3xl font-bold text-slate-800">
+            Welcome back
+          </h2>
+          <p className="mt-2 text-sm text-gray-600">
+            Don't have an account?{" "}
+            <Link href="/signup" className="font-medium text-brand-purple hover:text-brand-purple-dark">
+              Sign up
+            </Link>
+          </p>
+        </div>
 
+        {/* Login Form */}
+        <div className="card">
+          <div className="card-content">
             <form className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Email Address
+                <label htmlFor="email" className="block text-sm font-medium text-slate-800 mb-2">
+                  Email address
                 </label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
-                  <input
-                    type="email"
-                    className="w-full bg-surface-2 border border-border rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-accent"
-                    placeholder="Enter your email"
-                  />
-                </div>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  className="form-input"
+                  placeholder="Enter your email"
+                />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="password" className="block text-sm font-medium text-slate-800 mb-2">
                   Password
                 </label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
-                  <input
-                    type="password"
-                    className="w-full bg-surface-2 border border-border rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-accent"
-                    placeholder="Enter your password"
-                  />
-                </div>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  className="form-input"
+                  placeholder="Enter your password"
+                />
               </div>
 
               <div className="flex items-center justify-between">
-                <label className="flex items-center">
-                  <input type="checkbox" className="mr-2" />
-                  <span className="text-sm text-gray-400">Remember me</span>
-                </label>
-                <Link href="/forgot-password" className="text-sm text-accent hover:text-accent/80">
-                  Forgot password?
-                </Link>
+                <div className="flex items-center">
+                  <input
+                    id="remember-me"
+                    name="remember-me"
+                    type="checkbox"
+                    className="h-4 w-4 text-brand-purple focus:ring-brand-purple border-gray-200 rounded"
+                  />
+                  <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-600">
+                    Remember me
+                  </label>
+                </div>
+
+                <div className="text-sm">
+                  <a href="#" className="font-medium text-brand-purple hover:text-brand-purple-dark">
+                    Forgot your password?
+                  </a>
+                </div>
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-accent text-white py-3 rounded-lg font-semibold hover:bg-accent/90 transition-colors"
+                className="btn-primary w-full py-3"
               >
-                Sign In
+                Sign in
               </button>
 
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-border"></div>
+                  <div className="w-full border-t border-gray-200" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-surface text-gray-400">Or</span>
+                  <span className="px-2 bg-white text-gray-400">Or continue with</span>
                 </div>
               </div>
 
               <button
                 type="button"
-                className="w-full border border-border text-white py-3 rounded-lg font-semibold hover:bg-surface-2 transition-colors"
+                className="btn-secondary w-full py-3 flex items-center justify-center gap-2"
               >
-                Sign in with Magic Link
+                <Mail className="w-4 h-4" />
+                Magic link
               </button>
             </form>
-
-            <div className="mt-8 text-center">
-              <span className="text-gray-400">Don&apos;t have an account? </span>
-              <Link href="/signup" className="text-accent hover:text-accent/80 font-semibold">
-                Sign up
-              </Link>
-            </div>
           </div>
         </div>
+
+        <p className="text-center text-xs text-gray-400">
+          By signing in, you agree to our{" "}
+          <a href="#" className="font-medium text-brand-purple hover:text-brand-purple-dark">
+            Terms of Service
+          </a>{" "}
+          and{" "}
+          <a href="#" className="font-medium text-brand-purple hover:text-brand-purple-dark">
+            Privacy Policy
+          </a>
+        </p>
       </div>
-    </main>
+    </div>
   );
 }

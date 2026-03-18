@@ -3,17 +3,17 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "EmpactMe",
-  description: "Where Brands Meet Influence - The premier influencer-commerce marketplace connecting companies with top content creators.",
+  description: "Where Brands Meet Influence",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body className="bg-background text-foreground antialiased">
+      <body className="font-sans antialiased bg-gray-50">
         {children}
       </body>
     </html>

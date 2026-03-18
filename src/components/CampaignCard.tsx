@@ -1,68 +1,88 @@
 import { Calendar, DollarSign, Eye } from "lucide-react";
 
 interface CampaignCardProps {
-  name: string;
-  status: "Active" | "Pending" | "Completed";
-  startDate: string;
-  endDate: string;
-  budget: string;
-  impressions: string;
-  roi?: string;
+  campaign: {
+    id: number;
+    name: string;
+    influencer: string;
+    status: string;
+    startDate: string;
+    endDate: string;
+    budget: number;
+    spent: number;
+    impressions: number;
+    engagement: number;
+    progress: number;
+  };
 }
 
-export default function CampaignCard({
-  name,
-  status,
-  startDate,
-  endDate,
-  budget,
-  impressions,
-  roi
-}: CampaignCardProps) {
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "Active":
-        return "bg-green/10 text-green border-green/20";
-      case "Pending":
-        return "bg-cyan/10 text-cyan border-cyan/20";
-      case "Completed":
-        return "bg-gray-500/10 text-gray-400 border-gray-500/20";
-      default:
-        return "bg-gray-500/10 text-gray-400 border-gray-500/20";
-    }
-  };
-
+export default function CampaignCard({ campaign }: CampaignCardProps) {
   return (
-    <div className="bg-surface border border-border rounded-lg p-6 hover:border-accent/30 transition-colors">
-      <div className="flex items-start justify-between mb-4">
-        <h3 className="font-serif text-lg font-semibold">{name}</h3>
-        <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(status)}`}>
-          {status}
-        </span>
-      </div>
-      
-      <div className="space-y-3">
-        <div className="flex items-center space-x-2 text-sm text-gray-400">
-          <Calendar className="w-4 h-4" />
-          <span>{startDate} - {endDate}</span>
-        </div>
-        
-        <div className="flex items-center space-x-2 text-sm">
-          <DollarSign className="w-4 h-4 text-accent" />
-          <span className="font-semibold">{budget}</span>
-        </div>
-        
-        <div className="flex items-center space-x-2 text-sm">
-          <Eye className="w-4 h-4 text-cyan" />
-          <span>{impressions} impressions</span>
-        </div>
-        
-        {roi && (
-          <div className="pt-2 border-t border-border">
-            <span className="text-sm text-gray-400">ROI: </span>
-            <span className="text-green font-semibold">{roi}</span>
+    <div className="card">
+      <div className="card-content">
+        <div className="flex items-start justify-between mb-4">
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold text-slate-800 mb-1">
+              {campaign.name}
+            </h3>
+            <p className="text-sm text-gray-600">
+              with {campaign.influencer}
+            </p>
           </div>
-        )}
+          <span className={`status-badge ${campaign.status}`}>
+            {campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1)}
+          </span>
+        </div>
+
+        <div className="space-y-3">
+          <div className="flex items-center gap-4 text-sm">
+            <div className="flex items-center gap-1">
+              <Calendar className="w-4 h-4 text-gray-400" />
+              <span className="text-gray-600">
+                {new Date(campaign.startDate).toLocaleDateString()} - {new Date(campaign.endDate).toLocaleDateString()}
+              </span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <div className="text-gray-400">Budget</div>
+              <div className="font-medium text-slate-800">
+                ${campaign.budget.toLocaleString()}
+              </div>
+            </div>
+            <div>
+              <div className="text-gray-400">Impressions</div>
+              <div className="font-medium text-slate-800">
+                {campaign.impressions > 0 ? `${(campaign.impressions / 1000).toFixed(0)}K` : "0"}
+              </div>
+            </div>
+          </div>
+
+          {campaign.progress > 0 && (
+            <div>
+              <div className="flex justify-between items-center mb-2 text-sm">
+                <span className="text-gray-400">Progress</span>
+                <span className="font-medium text-slate-800">{campaign.progress}%</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div 
+                  className="bg-brand-purple h-2 rounded-full transition-all duration-500"
+                  style={{ width: `${campaign.progress}%` }}
+                ></div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-200">
+          <button className="btn-primary flex-1 py-2">
+            View Details
+          </button>
+          <button className="btn-secondary px-4 py-2">
+            Edit
+          </button>
+        </div>
       </div>
     </div>
   );

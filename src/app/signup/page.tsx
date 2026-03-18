@@ -1,189 +1,215 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
-import { Building2, Users, Mail, Lock, User } from "lucide-react";
+import { Building2, Users } from "lucide-react";
 
 export default function SignupPage() {
-  const [selectedRole, setSelectedRole] = useState<"company" | "influencer" | null>(null);
+  return (
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <Link href="/" className="inline-block">
+            <span className="text-3xl font-bold text-brand-purple">EmpactMe</span>
+          </Link>
+          <h1 className="mt-6 text-4xl font-bold text-slate-800">
+            Join EmpactMe
+          </h1>
+          <p className="mt-2 text-lg text-gray-600">
+            Choose your account type to get started
+          </p>
+          <p className="mt-2 text-sm text-gray-600">
+            Already have an account?{" "}
+            <Link href="/login" className="font-medium text-brand-purple hover:text-brand-purple-dark">
+              Sign in
+            </Link>
+          </p>
+        </div>
 
-  const roles = [
-    {
-      id: "company" as const,
-      title: "Company",
-      description: "Looking to partner with influencers and drive campaign results",
-      icon: <Building2 className="w-8 h-8" />,
-      benefits: ["Access to verified influencers", "Campaign management tools", "Real-time analytics", "Automated payments"]
-    },
-    {
-      id: "influencer" as const,
-      title: "Influencer",
-      description: "Ready to monetize your audience and work with top brands",
-      icon: <Users className="w-8 h-8" />,
-      benefits: ["Exclusive brand partnerships", "Flexible scheduling", "Transparent pricing", "Fast payments"]
-    }
-  ];
-
-  if (!selectedRole) {
-    return (
-      <main className="min-h-screen bg-background">
-        <Navbar />
-        
-        <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] px-4">
-          <div className="w-full max-w-4xl">
-            <div className="text-center mb-12">
-              <h1 className="text-4xl font-serif font-bold mb-4">Join EmpactMe</h1>
-              <p className="text-xl text-gray-400">Choose how you want to get started</p>
+        {/* Account Type Selection */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          {/* Company Card */}
+          <div className="card cursor-pointer hover:shadow-lg transition-shadow">
+            <div className="card-content text-center">
+              <div className="w-16 h-16 bg-brand-purple-light rounded-full flex items-center justify-center mx-auto mb-4">
+                <Building2 className="w-8 h-8 text-brand-purple" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-800 mb-3">
+                I'm a Company
+              </h3>
+              <p className="text-gray-600 mb-6">
+                Connect with influencers and manage campaigns to grow your brand's reach and impact.
+              </p>
+              <ul className="text-sm text-gray-600 text-left space-y-2 mb-6">
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 bg-brand-purple rounded-full"></div>
+                  Campaign management dashboard
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 bg-brand-purple rounded-full"></div>
+                  Influencer discovery and matching
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 bg-brand-purple rounded-full"></div>
+                  Real-time analytics and reporting
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 bg-brand-purple rounded-full"></div>
+                  Contract and payment management
+                </li>
+              </ul>
+              <button className="btn-primary w-full py-3">
+                Sign up as Company
+              </button>
             </div>
+          </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
-              {roles.map((role) => (
-                <button
-                  key={role.id}
-                  onClick={() => setSelectedRole(role.id)}
-                  className="bg-surface border border-border rounded-xl p-8 text-left hover:border-accent/50 transition-all duration-300 group"
-                >
-                  <div className="text-accent mb-4 group-hover:scale-110 transition-transform">
-                    {role.icon}
-                  </div>
-                  
-                  <h2 className="text-2xl font-serif font-bold mb-3">{role.title}</h2>
-                  <p className="text-gray-400 mb-6">{role.description}</p>
-                  
-                  <div className="space-y-2">
-                    {role.benefits.map((benefit, index) => (
-                      <div key={index} className="flex items-center text-sm text-gray-300">
-                        <div className="w-1.5 h-1.5 bg-accent rounded-full mr-3"></div>
-                        {benefit}
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <div className="mt-6 text-accent font-semibold">
-                    Get Started →
-                  </div>
-                </button>
-              ))}
+          {/* Influencer Card */}
+          <div className="card cursor-pointer hover:shadow-lg transition-shadow">
+            <div className="card-content text-center">
+              <div className="w-16 h-16 bg-brand-purple-light rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="w-8 h-8 text-brand-purple" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-800 mb-3">
+                I'm an Influencer
+              </h3>
+              <p className="text-gray-600 mb-6">
+                Monetize your influence and connect with brands that align with your content and values.
+              </p>
+              <ul className="text-sm text-gray-600 text-left space-y-2 mb-6">
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 bg-brand-purple rounded-full"></div>
+                  Profile showcase and portfolio
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 bg-brand-purple rounded-full"></div>
+                  Brand partnership opportunities
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 bg-brand-purple rounded-full"></div>
+                  Performance tracking and insights
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 bg-brand-purple rounded-full"></div>
+                  Secure payments and contracts
+                </li>
+              </ul>
+              <button className="btn-primary w-full py-3">
+                Sign up as Influencer
+              </button>
             </div>
           </div>
         </div>
-      </main>
-    );
-  }
 
-  return (
-    <main className="min-h-screen bg-background">
-      <Navbar />
-      
-      <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] px-4">
-        <div className="w-full max-w-md">
-          <div className="bg-surface border border-border rounded-xl p-8">
-            <div className="text-center mb-8">
-              <button 
-                onClick={() => setSelectedRole(null)}
-                className="text-accent hover:text-accent/80 text-sm mb-4"
-              >
-                ← Back to role selection
-              </button>
-              <h1 className="text-3xl font-serif font-bold mb-2">
-                Create {selectedRole === "company" ? "Company" : "Influencer"} Account
-              </h1>
-              <p className="text-gray-400">Join the EmpactMe community</p>
-            </div>
-
-            <form className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Full Name
-                </label>
-                <div className="relative">
-                  <User className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
-                  <input
-                    type="text"
-                    className="w-full bg-surface-2 border border-border rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-accent"
-                    placeholder="Enter your full name"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Email Address
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
-                  <input
-                    type="email"
-                    className="w-full bg-surface-2 border border-border rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-accent"
-                    placeholder="Enter your email"
-                  />
-                </div>
-              </div>
-
-              {selectedRole === "company" && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Company Name
-                  </label>
-                  <div className="relative">
-                    <Building2 className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+        {/* Signup Form */}
+        <div className="max-w-2xl mx-auto">
+          <div className="card">
+            <div className="card-content">
+              <h3 className="text-xl font-bold text-slate-800 mb-6">
+                Create your account
+              </h3>
+              <form className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="firstName" className="block text-sm font-medium text-slate-800 mb-2">
+                      First name
+                    </label>
                     <input
+                      id="firstName"
+                      name="firstName"
                       type="text"
-                      className="w-full bg-surface-2 border border-border rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-accent"
-                      placeholder="Enter your company name"
+                      required
+                      className="form-input"
+                      placeholder="Enter your first name"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="lastName" className="block text-sm font-medium text-slate-800 mb-2">
+                      Last name
+                    </label>
+                    <input
+                      id="lastName"
+                      name="lastName"
+                      type="text"
+                      required
+                      className="form-input"
+                      placeholder="Enter your last name"
                     />
                   </div>
                 </div>
-              )}
 
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Password
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-slate-800 mb-2">
+                    Email address
+                  </label>
                   <input
-                    type="password"
-                    className="w-full bg-surface-2 border border-border rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-accent"
-                    placeholder="Create a password"
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    className="form-input"
+                    placeholder="Enter your email"
                   />
                 </div>
-              </div>
 
-              <div>
-                <label className="flex items-start space-x-3">
-                  <input type="checkbox" className="mt-1" />
-                  <span className="text-sm text-gray-400">
+                <div>
+                  <label htmlFor="company" className="block text-sm font-medium text-slate-800 mb-2">
+                    Company name (optional)
+                  </label>
+                  <input
+                    id="company"
+                    name="company"
+                    type="text"
+                    className="form-input"
+                    placeholder="Enter your company name"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="password" className="block text-sm font-medium text-slate-800 mb-2">
+                    Password
+                  </label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autoComplete="new-password"
+                    required
+                    className="form-input"
+                    placeholder="Create a strong password"
+                  />
+                </div>
+
+                <div className="flex items-center">
+                  <input
+                    id="terms"
+                    name="terms"
+                    type="checkbox"
+                    required
+                    className="h-4 w-4 text-brand-purple focus:ring-brand-purple border-gray-200 rounded"
+                  />
+                  <label htmlFor="terms" className="ml-2 block text-sm text-gray-600">
                     I agree to the{" "}
-                    <Link href="/terms" className="text-accent hover:text-accent/80">
+                    <a href="#" className="font-medium text-brand-purple hover:text-brand-purple-dark">
                       Terms of Service
-                    </Link>
-                    {" "}and{" "}
-                    <Link href="/privacy" className="text-accent hover:text-accent/80">
+                    </a>{" "}
+                    and{" "}
+                    <a href="#" className="font-medium text-brand-purple hover:text-brand-purple-dark">
                       Privacy Policy
-                    </Link>
-                  </span>
-                </label>
-              </div>
+                    </a>
+                  </label>
+                </div>
 
-              <button
-                type="submit"
-                className="w-full bg-accent text-white py-3 rounded-lg font-semibold hover:bg-accent/90 transition-colors"
-              >
-                Create Account
-              </button>
-            </form>
-
-            <div className="mt-8 text-center">
-              <span className="text-gray-400">Already have an account? </span>
-              <Link href="/login" className="text-accent hover:text-accent/80 font-semibold">
-                Sign in
-              </Link>
+                <button
+                  type="submit"
+                  className="btn-primary w-full py-3"
+                >
+                  Create account
+                </button>
+              </form>
             </div>
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

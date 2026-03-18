@@ -1,76 +1,60 @@
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import { 
-  Truck, 
-  Video, 
-  Target, 
-  BarChart3, 
-  CreditCard, 
-  FileText 
-} from "lucide-react";
+import { Truck, Video, Brain, BarChart3, CreditCard, FileText } from "lucide-react";
 
-export default function Home() {
+export default function HomePage() {
   const features = [
     {
-      icon: <Truck className="w-8 h-8" />,
+      icon: Truck,
       title: "Transportation Marketplace",
-      description: "Connect with reliable transportation services through our vetted network of professional drivers and fleet operators."
+      description: "Connect brands with transportation services for targeted mobile advertising campaigns."
     },
     {
-      icon: <Video className="w-8 h-8" />,
+      icon: Video,
       title: "Celebrity Video Cards",
-      description: "Get personalized video content from top celebrities and influencers to boost your brand's social media presence."
+      description: "Personalized video content from celebrities and influencers for authentic brand partnerships."
     },
     {
-      icon: <Target className="w-8 h-8" />,
+      icon: Brain,
       title: "Smart Matching",
-      description: "Our AI-powered algorithm matches brands with the perfect influencers based on audience demographics and engagement."
+      description: "AI-powered algorithm that matches brands with the perfect influencers for maximum impact."
     },
     {
-      icon: <BarChart3 className="w-8 h-8" />,
+      icon: BarChart3,
       title: "Real-Time Analytics",
-      description: "Track campaign performance with comprehensive analytics and insights to optimize your marketing ROI."
+      description: "Comprehensive analytics dashboard to track campaign performance and ROI in real-time."
     },
     {
-      icon: <CreditCard className="w-8 h-8" />,
+      icon: CreditCard,
       title: "Automated Payments",
-      description: "Secure, automated payment processing with transparent pricing and instant payouts for all parties."
+      description: "Seamless payment processing with automated commission distribution and invoicing."
     },
     {
-      icon: <FileText className="w-8 h-8" />,
+      icon: FileText,
       title: "E-Contracts",
-      description: "Streamlined digital contracts with built-in compliance and legal protection for all your collaborations."
+      description: "Digital contract management with e-signatures for streamlined partnership agreements."
     }
   ];
 
   return (
-    <main className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       <Navbar />
       
       {/* Hero Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 text-balance">
-            Where Brands Meet 
-            <span className="text-accent"> Influence</span>
+      <section className="relative py-20 px-6">
+        <div className="max-w-7xl mx-auto text-center">
+          <h1 className="text-5xl md:text-6xl font-bold text-slate-800 mb-6">
+            Where Brands Meet
+            <span className="text-brand-purple"> Influence</span>
           </h1>
-          
-          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto text-balance">
-            The premier marketplace connecting forward-thinking companies with top-tier 
-            influencers and content creators. Drive authentic engagement and measurable results.
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            Connect your brand with the right influencers and transportation partners to create impactful campaigns that drive real results.
           </p>
-          
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Link 
-              href="/login"
-              className="bg-accent text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-accent/90 transition-colors"
-            >
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/signup" className="btn-primary px-8 py-3 text-lg">
               Get Started
             </Link>
-            <Link 
-              href="/roadmap"
-              className="border border-cyan text-cyan px-8 py-4 rounded-lg text-lg font-semibold hover:bg-cyan/10 transition-colors"
-            >
+            <Link href="/roadmap" className="btn-secondary px-8 py-3 text-lg">
               View Roadmap
             </Link>
           </div>
@@ -78,24 +62,31 @@ export default function Home() {
       </section>
 
       {/* Features Grid */}
-      <section className="py-20 px-4 bg-surface/30">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-center mb-16">
-            Everything You Need to Scale Your Influence
-          </h2>
+      <section className="py-20 px-6 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-slate-800 mb-4">
+              Everything You Need to Scale
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Our platform provides all the tools and features you need to create, manage, and optimize successful influencer marketing campaigns.
+            </p>
+          </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <div key={index} className="bg-surface border border-border rounded-lg p-8 hover:border-accent/30 transition-colors">
-                <div className="text-accent mb-4">
-                  {feature.icon}
+              <div key={index} className="card">
+                <div className="card-content">
+                  <div className="w-12 h-12 bg-brand-purple-light rounded-lg flex items-center justify-center mb-4">
+                    <feature.icon className="w-6 h-6 text-brand-purple" />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-800 mb-3">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600">
+                    {feature.description}
+                  </p>
                 </div>
-                <h3 className="text-xl font-serif font-semibold mb-4">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-300">
-                  {feature.description}
-                </p>
               </div>
             ))}
           </div>
@@ -103,22 +94,19 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6">
+          <h2 className="text-4xl font-bold text-slate-800 mb-6">
             Ready to Transform Your Marketing?
           </h2>
-          <p className="text-xl text-gray-300 mb-12">
-            Join thousands of brands and creators already succeeding on EmpactMe.
+          <p className="text-xl text-gray-600 mb-8">
+            Join thousands of brands and influencers who trust EmpactMe to deliver exceptional results.
           </p>
-          <Link 
-            href="/signup"
-            className="bg-accent text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-accent/90 transition-colors inline-block"
-          >
+          <Link href="/signup" className="btn-primary px-8 py-3 text-lg">
             Start Your Journey
           </Link>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

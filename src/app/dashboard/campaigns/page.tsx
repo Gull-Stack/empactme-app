@@ -2,177 +2,313 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import CampaignCard from "@/components/CampaignCard";
-import { Search, Plus, Filter } from "lucide-react";
+import { Plus, Search, Grid, List, Calendar, DollarSign } from "lucide-react";
 
 export default function CampaignsPage() {
-  const [activeFilter, setActiveFilter] = useState("All");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState("all");
+  const [viewMode, setViewMode] = useState("grid");
 
-  const filters = ["All", "Active", "Pending", "Completed"];
+  const tabs = [
+    { id: "all", label: "All Campaigns", count: 24 },
+    { id: "active", label: "Active", count: 8 },
+    { id: "pending", label: "Pending", count: 5 },
+    { id: "completed", label: "Completed", count: 11 },
+  ];
 
-  const campaigns = [
+  const mockCampaigns = [
     {
-      name: "Summer Collection 2024",
-      status: "Active" as const,
-      startDate: "Mar 1, 2024",
-      endDate: "Apr 30, 2024",
-      budget: "$15,000",
-      impressions: "2.4M",
-      roi: "+340%"
+      id: 1,
+      name: "Summer Fashion Collection",
+      influencer: "Sarah Johnson",
+      status: "active",
+      startDate: "2024-03-01",
+      endDate: "2024-04-15",
+      budget: 5000,
+      spent: 3200,
+      impressions: 127000,
+      engagement: 4.2,
+      progress: 64
     },
     {
+      id: 2,
       name: "Tech Product Launch",
-      status: "Pending" as const,
-      startDate: "Apr 15, 2024",
-      endDate: "May 15, 2024",
-      budget: "$8,500",
-      impressions: "850K",
+      influencer: "Mike Chen",
+      status: "pending",
+      startDate: "2024-03-15",
+      endDate: "2024-04-30",
+      budget: 3200,
+      spent: 0,
+      impressions: 0,
+      engagement: 0,
+      progress: 0
     },
     {
-      name: "Holiday Special Campaign",
-      status: "Completed" as const,
-      startDate: "Dec 1, 2023",
-      endDate: "Dec 31, 2023",
-      budget: "$22,000",
-      impressions: "5.2M",
-      roi: "+425%"
+      id: 3,
+      name: "Travel Adventure Series",
+      influencer: "Emma Davis",
+      status: "completed",
+      startDate: "2024-02-01",
+      endDate: "2024-02-29",
+      budget: 2800,
+      spent: 2800,
+      impressions: 156000,
+      engagement: 5.1,
+      progress: 100
     },
     {
-      name: "Brand Awareness Drive",
-      status: "Active" as const,
-      startDate: "Feb 1, 2024",
-      endDate: "Mar 31, 2024",
-      budget: "$12,000",
-      impressions: "1.8M",
-      roi: "+280%"
+      id: 4,
+      name: "Fitness Challenge",
+      influencer: "Alex Rodriguez",
+      status: "active",
+      startDate: "2024-03-10",
+      endDate: "2024-05-10",
+      budget: 4500,
+      spent: 1800,
+      impressions: 203000,
+      engagement: 3.8,
+      progress: 40
     },
     {
-      name: "Influencer Collaboration",
-      status: "Pending" as const,
-      startDate: "May 1, 2024",
-      endDate: "Jun 1, 2024",
-      budget: "$6,000",
-      impressions: "420K",
+      id: 5,
+      name: "Food & Recipe Content",
+      influencer: "Lisa Thompson",
+      status: "completed",
+      startDate: "2024-01-15",
+      endDate: "2024-02-15",
+      budget: 1900,
+      spent: 1900,
+      impressions: 98000,
+      engagement: 6.2,
+      progress: 100
     },
     {
-      name: "Q1 Marketing Push",
-      status: "Completed" as const,
-      startDate: "Jan 1, 2024",
-      endDate: "Mar 31, 2024",
-      budget: "$18,500",
-      impressions: "3.1M",
-      roi: "+390%"
+      id: 6,
+      name: "Beauty Product Review",
+      influencer: "Jessica Park",
+      status: "pending",
+      startDate: "2024-04-01",
+      endDate: "2024-05-01",
+      budget: 3500,
+      spent: 0,
+      impressions: 0,
+      engagement: 0,
+      progress: 0
     }
   ];
 
-  const filteredCampaigns = campaigns.filter(campaign => {
-    const matchesFilter = activeFilter === "All" || campaign.status === activeFilter;
-    const matchesSearch = campaign.name.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesFilter && matchesSearch;
+  const filteredCampaigns = mockCampaigns.filter(campaign => {
+    if (activeTab === "all") return true;
+    return campaign.status === activeTab;
   });
 
-  const getFilterCount = (filter: string) => {
-    if (filter === "All") return campaigns.length;
-    return campaigns.filter(c => c.status === filter).length;
-  };
+  const CampaignCard = ({ campaign }: { campaign: any }) => (
+    <div className="card">
+      <div className="card-content">
+        <div className="flex items-start justify-between mb-4">
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold text-slate-800 mb-1">
+              {campaign.name}
+            </h3>
+            <p className="text-sm text-gray-600">
+              with {campaign.influencer}
+            </p>
+          </div>
+          <span className={`status-badge ${campaign.status}`}>
+            {campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1)}
+          </span>
+        </div>
+
+        <div className="space-y-3">
+          <div className="flex items-center gap-4 text-sm">
+            <div className="flex items-center gap-1">
+              <Calendar className="w-4 h-4 text-gray-400" />
+              <span className="text-gray-600">
+                {new Date(campaign.startDate).toLocaleDateString()} - {new Date(campaign.endDate).toLocaleDateString()}
+              </span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <div className="text-gray-400">Budget</div>
+              <div className="font-medium text-slate-800">
+                ${campaign.budget.toLocaleString()}
+              </div>
+            </div>
+            <div>
+              <div className="text-gray-400">Impressions</div>
+              <div className="font-medium text-slate-800">
+                {campaign.impressions > 0 ? `${(campaign.impressions / 1000).toFixed(0)}K` : "0"}
+              </div>
+            </div>
+          </div>
+
+          {campaign.progress > 0 && (
+            <div>
+              <div className="flex justify-between items-center mb-2 text-sm">
+                <span className="text-gray-400">Progress</span>
+                <span className="font-medium text-slate-800">{campaign.progress}%</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div 
+                  className="bg-brand-purple h-2 rounded-full transition-all duration-500"
+                  style={{ width: `${campaign.progress}%` }}
+                ></div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-200">
+          <button className="btn-primary flex-1 py-2">
+            View Details
+          </button>
+          <button className="btn-secondary px-4 py-2">
+            Edit
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
-    <div>
+    <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8">
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-serif font-bold mb-2">Campaigns</h1>
-          <p className="text-gray-400">Manage and track your influencer campaigns</p>
+          <h1 className="text-3xl font-bold text-slate-800 mb-2">
+            Campaigns
+          </h1>
+          <p className="text-gray-600">
+            Manage and track your influencer marketing campaigns
+          </p>
         </div>
-        
-        <Link 
-          href="/dashboard/campaigns/new"
-          className="bg-accent text-white px-6 py-3 rounded-lg font-semibold hover:bg-accent/90 transition-colors flex items-center space-x-2 mt-4 sm:mt-0"
-        >
-          <Plus className="w-5 h-5" />
-          <span>New Campaign</span>
+        <Link href="/dashboard/campaigns/new" className="btn-primary px-4 py-2 flex items-center gap-2">
+          <Plus className="w-4 h-4" />
+          New Campaign
         </Link>
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-surface border border-border rounded-lg p-6 mb-8">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between space-y-4 lg:space-y-0">
-          {/* Filter Tabs */}
-          <div className="flex space-x-1 bg-surface-2 p-1 rounded-lg">
-            {filters.map((filter) => (
-              <button
-                key={filter}
-                onClick={() => setActiveFilter(filter)}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeFilter === filter
-                    ? "bg-accent text-white"
-                    : "text-gray-400 hover:text-white"
-                }`}
-              >
-                {filter} ({getFilterCount(filter)})
-              </button>
-            ))}
-          </div>
-
-          {/* Search and Filter */}
-          <div className="flex space-x-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search campaigns..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-surface-2 border border-border rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-accent w-64"
-              />
+      <div className="card">
+        <div className="card-content">
+          <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+            {/* Filter Tabs */}
+            <div className="flex items-center gap-2">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    activeTab === tab.id
+                      ? "bg-brand-purple text-white"
+                      : "text-gray-600 hover:text-slate-800 hover:bg-gray-50"
+                  }`}
+                >
+                  {tab.label} ({tab.count})
+                </button>
+              ))}
             </div>
-            
-            <button className="flex items-center space-x-2 px-4 py-3 bg-surface-2 border border-border rounded-lg text-gray-400 hover:text-white transition-colors">
-              <Filter className="w-5 h-5" />
-              <span>Filters</span>
-            </button>
+
+            <div className="flex items-center gap-4 lg:ml-auto">
+              {/* Search */}
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <input
+                  type="text"
+                  placeholder="Search campaigns..."
+                  className="form-input pl-10 w-64"
+                />
+              </div>
+
+              {/* View Toggle */}
+              <div className="flex items-center gap-1 p-1 bg-gray-50 rounded-lg">
+                <button
+                  onClick={() => setViewMode("grid")}
+                  className={`p-2 rounded ${
+                    viewMode === "grid"
+                      ? "bg-white shadow-sm"
+                      : "hover:bg-white"
+                  }`}
+                >
+                  <Grid className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setViewMode("list")}
+                  className={`p-2 rounded ${
+                    viewMode === "list"
+                      ? "bg-white shadow-sm"
+                      : "hover:bg-white"
+                  }`}
+                >
+                  <List className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Campaign Grid */}
-      {filteredCampaigns.length > 0 ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredCampaigns.map((campaign, index) => (
-            <CampaignCard
-              key={index}
-              name={campaign.name}
-              status={campaign.status}
-              startDate={campaign.startDate}
-              endDate={campaign.endDate}
-              budget={campaign.budget}
-              impressions={campaign.impressions}
-              roi={campaign.roi}
-            />
+      {/* Campaigns Grid/List */}
+      {viewMode === "grid" ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {filteredCampaigns.map((campaign) => (
+            <CampaignCard key={campaign.id} campaign={campaign} />
           ))}
         </div>
       ) : (
-        <div className="text-center py-12">
-          <div className="bg-surface-2 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Search className="w-8 h-8 text-gray-400" />
+        <div className="card">
+          <div className="card-content">
+            <div className="overflow-x-auto">
+              <table className="min-w-full">
+                <thead>
+                  <tr className="border-b border-gray-200">
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Campaign</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Influencer</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Status</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Budget</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Progress</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredCampaigns.map((campaign) => (
+                    <tr key={campaign.id} className="border-b border-gray-200 last:border-b-0">
+                      <td className="py-4 px-4">
+                        <div className="font-medium text-slate-800">{campaign.name}</div>
+                      </td>
+                      <td className="py-4 px-4 text-gray-600">{campaign.influencer}</td>
+                      <td className="py-4 px-4">
+                        <span className={`status-badge ${campaign.status}`}>
+                          {campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1)}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4 text-gray-600">
+                        ${campaign.budget.toLocaleString()}
+                      </td>
+                      <td className="py-4 px-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-16 bg-gray-200 rounded-full h-2">
+                            <div 
+                              className="bg-brand-purple h-2 rounded-full"
+                              style={{ width: `${campaign.progress}%` }}
+                            ></div>
+                          </div>
+                          <span className="text-sm text-gray-600">{campaign.progress}%</span>
+                        </div>
+                      </td>
+                      <td className="py-4 px-4">
+                        <div className="flex items-center gap-2">
+                          <button className="btn-primary px-3 py-1 text-sm">View</button>
+                          <button className="btn-secondary px-3 py-1 text-sm">Edit</button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-          <h3 className="text-lg font-semibold mb-2">No campaigns found</h3>
-          <p className="text-gray-400 mb-6">
-            {searchQuery 
-              ? `No campaigns match "${searchQuery}"`
-              : `No ${activeFilter.toLowerCase()} campaigns found`
-            }
-          </p>
-          {activeFilter === "All" && !searchQuery && (
-            <Link 
-              href="/dashboard/campaigns/new"
-              className="bg-accent text-white px-6 py-3 rounded-lg font-semibold hover:bg-accent/90 transition-colors inline-flex items-center space-x-2"
-            >
-              <Plus className="w-5 h-5" />
-              <span>Create Your First Campaign</span>
-            </Link>
-          )}
         </div>
       )}
     </div>

@@ -1,249 +1,329 @@
-import { Download, Eye, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { Download, ExternalLink, Clock, CheckCircle, AlertCircle } from "lucide-react";
 
 export default function PaymentsPage() {
-  const transactions = [
+  const mockTransactions = [
     {
-      id: "PAY-001",
-      description: "Summer Collection Campaign",
-      amount: "$2,450.00",
-      status: "Completed",
-      date: "Mar 15, 2024",
-      type: "credit"
+      id: "TXN-001",
+      date: "2024-03-15",
+      description: "Summer Fashion Campaign - Sarah Johnson",
+      amount: 2500,
+      status: "completed",
+      type: "payment_sent"
     },
     {
-      id: "PAY-002", 
-      description: "Platform Fee",
-      amount: "$245.00",
-      status: "Completed",
-      date: "Mar 15, 2024",
-      type: "debit"
+      id: "TXN-002",
+      date: "2024-03-14",
+      description: "Platform commission - February",
+      amount: -450,
+      status: "completed",
+      type: "fee"
     },
     {
-      id: "PAY-003",
-      description: "Tech Product Launch",
-      amount: "$1,850.00",
-      status: "Pending",
-      date: "Mar 12, 2024",
-      type: "credit"
+      id: "TXN-003",
+      date: "2024-03-12",
+      description: "Tech Product Launch - Mike Chen",
+      amount: 1600,
+      status: "pending",
+      type: "payment_sent"
     },
     {
-      id: "PAY-004",
-      description: "Brand Partnership Bonus",
-      amount: "$500.00",
-      status: "Completed",
-      date: "Mar 10, 2024",
-      type: "credit"
+      id: "TXN-004",
+      date: "2024-03-10",
+      description: "Travel Adventure Series - Emma Davis",
+      amount: 1400,
+      status: "completed",
+      type: "payment_sent"
     },
     {
-      id: "PAY-005",
-      description: "Withdrawal to Bank",
-      amount: "$3,000.00",
-      status: "Processing",
-      date: "Mar 8, 2024",
-      type: "debit"
+      id: "TXN-005",
+      date: "2024-03-08",
+      description: "Fitness Challenge - Alex Rodriguez",
+      amount: 2250,
+      status: "processing",
+      type: "payment_sent"
     },
     {
-      id: "PAY-006",
-      description: "Holiday Campaign Payout",
-      amount: "$4,250.00",
-      status: "Completed",
-      date: "Mar 5, 2024",
-      type: "credit"
+      id: "TXN-006",
+      date: "2024-03-05",
+      description: "Food Recipe Content - Lisa Thompson",
+      amount: 950,
+      status: "completed",
+      type: "payment_sent"
+    },
+    {
+      id: "TXN-007",
+      date: "2024-03-03",
+      description: "Beauty Product Review - Jessica Park",
+      amount: 1750,
+      status: "failed",
+      type: "payment_sent"
+    },
+    {
+      id: "TXN-008",
+      date: "2024-03-01",
+      description: "Account top-up",
+      amount: 10000,
+      status: "completed",
+      type: "deposit"
     }
   ];
 
-  const getStatusColor = (status: string) => {
+  const getStatusIcon = (status: string) => {
     switch (status) {
-      case "Completed":
-        return "bg-green/10 text-green border-green/20";
-      case "Pending":
-        return "bg-cyan/10 text-cyan border-cyan/20";
-      case "Processing":
-        return "bg-accent/10 text-accent border-accent/20";
+      case "completed":
+        return <CheckCircle className="w-4 h-4 text-green-600" />;
+      case "pending":
+      case "processing":
+        return <Clock className="w-4 h-4 text-amber-600" />;
+      case "failed":
+        return <AlertCircle className="w-4 h-4 text-red-600" />;
       default:
-        return "bg-gray-500/10 text-gray-400 border-gray-500/20";
+        return null;
+    }
+  };
+
+  const getStatusBadge = (status: string) => {
+    const baseClasses = "status-badge";
+    switch (status) {
+      case "completed":
+        return `${baseClasses} complete`;
+      case "pending":
+        return `${baseClasses} pending`;
+      case "processing":
+        return `${baseClasses} in-progress`;
+      case "failed":
+        return `${baseClasses} bg-red-100 text-red-800`;
+      default:
+        return baseClasses;
     }
   };
 
   return (
-    <div>
+    <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8">
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-serif font-bold mb-2">Payments</h1>
-          <p className="text-gray-400">Track your earnings and transaction history</p>
+          <h1 className="text-3xl font-bold text-slate-800 mb-2">
+            Payments
+          </h1>
+          <p className="text-gray-600">
+            Track your earnings, payments, and transaction history
+          </p>
         </div>
-        
-        <button className="bg-accent text-white px-6 py-3 rounded-lg font-semibold hover:bg-accent/90 transition-colors flex items-center space-x-2 mt-4 sm:mt-0">
-          <Download className="w-5 h-5" />
-          <span>Export Report</span>
+        <button className="btn-primary px-4 py-2 flex items-center gap-2">
+          <Download className="w-4 h-4" />
+          Export Report
         </button>
       </div>
 
-      {/* Earnings Overview */}
-      <div className="grid md:grid-cols-4 gap-6 mb-8">
-        <div className="bg-surface border border-border rounded-lg p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-medium text-gray-400">Available Balance</h3>
-            <div className="text-green">
-              <ArrowUpRight className="w-5 h-5" />
+      {/* Earnings Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="card">
+          <div className="card-content">
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="text-3xl font-bold text-green-600 mb-1">
+                  $24,580
+                </div>
+                <div className="text-sm text-gray-600">
+                  Total Earnings
+                </div>
+                <div className="text-xs text-green-600 mt-1">
+                  ↗ +12.5% from last month
+                </div>
+              </div>
+              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                <CheckCircle className="w-6 h-6 text-green-600" />
+              </div>
             </div>
           </div>
-          <div className="text-2xl font-bold text-green mb-1">$8,450.00</div>
-          <div className="text-sm text-gray-400">Ready for withdrawal</div>
         </div>
 
-        <div className="bg-surface border border-border rounded-lg p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-medium text-gray-400">Pending Earnings</h3>
-            <div className="text-cyan">
-              <ArrowUpRight className="w-5 h-5" />
+        <div className="card">
+          <div className="card-content">
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="text-3xl font-bold text-amber-600 mb-1">
+                  $3,850
+                </div>
+                <div className="text-sm text-gray-600">
+                  Pending Payments
+                </div>
+                <div className="text-xs text-gray-400 mt-1">
+                  2 transactions pending
+                </div>
+              </div>
+              <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
+                <Clock className="w-6 h-6 text-amber-600" />
+              </div>
             </div>
           </div>
-          <div className="text-2xl font-bold text-cyan mb-1">$1,850.00</div>
-          <div className="text-sm text-gray-400">Processing</div>
         </div>
 
-        <div className="bg-surface border border-border rounded-lg p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-medium text-gray-400">This Month</h3>
-            <div className="text-accent">
-              <ArrowUpRight className="w-5 h-5" />
+        <div className="card">
+          <div className="card-content">
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="text-3xl font-bold text-brand-purple mb-1">
+                  $20,730
+                </div>
+                <div className="text-sm text-gray-600">
+                  Available for Payout
+                </div>
+                <div className="text-xs text-gray-400 mt-1">
+                  Ready to withdraw
+                </div>
+              </div>
+              <button className="btn-primary px-4 py-2 text-sm">
+                Withdraw
+              </button>
             </div>
           </div>
-          <div className="text-2xl font-bold text-accent mb-1">$12,580.00</div>
-          <div className="text-sm text-green">+24% vs last month</div>
-        </div>
-
-        <div className="bg-surface border border-border rounded-lg p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-medium text-gray-400">Total Lifetime</h3>
-            <div className="text-white">
-              <ArrowUpRight className="w-5 h-5" />
-            </div>
-          </div>
-          <div className="text-2xl font-bold mb-1">$156,730.00</div>
-          <div className="text-sm text-gray-400">Since joining</div>
         </div>
       </div>
 
-      {/* Earnings Chart Placeholder */}
-      <div className="bg-surface border border-border rounded-lg p-6 mb-8">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-serif font-semibold">Earnings Overview</h2>
-          <select className="bg-surface-2 border border-border rounded-lg px-4 py-2 text-white focus:outline-none focus:border-accent">
-            <option>Last 30 days</option>
-            <option>Last 3 months</option>
-            <option>Last 6 months</option>
-            <option>Last year</option>
-          </select>
-        </div>
-        
-        <div className="h-64 bg-surface-2 rounded-lg flex items-center justify-center">
-          <div className="text-center">
-            <div className="text-gray-400 mb-2">📈</div>
-            <p className="text-gray-400">Earnings chart will be displayed here</p>
-            <p className="text-sm text-gray-500">Integration with analytics coming soon</p>
+      {/* Payout Status */}
+      <div className="card">
+        <div className="card-content">
+          <h3 className="text-lg font-semibold text-slate-800 mb-4">
+            Payout Information
+          </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h4 className="font-medium text-slate-800 mb-3">Bank Account</h4>
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <div className="text-sm space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Bank</span>
+                    <span className="text-slate-800">Chase Bank</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Account</span>
+                    <span className="text-slate-800">****1234</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Status</span>
+                    <span className="text-green-600 font-medium">Verified</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <h4 className="font-medium text-slate-800 mb-3">Payout Schedule</h4>
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <div className="text-sm space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Frequency</span>
+                    <span className="text-slate-800">Weekly</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Next Payout</span>
+                    <span className="text-slate-800">March 22, 2024</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Minimum</span>
+                    <span className="text-slate-800">$100</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Recent Transactions */}
-      <div className="bg-surface border border-border rounded-lg p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-serif font-semibold">Recent Transactions</h2>
-          <button className="text-accent hover:text-accent/80 font-medium">
-            View All
-          </button>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-border">
-                <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Transaction</th>
-                <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Amount</th>
-                <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Status</th>
-                <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Date</th>
-                <th className="text-right py-3 px-4 text-sm font-medium text-gray-400">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {transactions.map((transaction) => (
-                <tr key={transaction.id} className="border-b border-border/50 hover:bg-surface-2/30 transition-colors">
-                  <td className="py-4 px-4">
-                    <div className="flex items-center space-x-3">
-                      <div className={`w-2 h-2 rounded-full ${
-                        transaction.type === "credit" ? "bg-green" : "bg-red-400"
-                      }`} />
-                      <div>
-                        <p className="font-medium">{transaction.description}</p>
-                        <p className="text-sm text-gray-400">{transaction.id}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="py-4 px-4">
-                    <span className={`font-semibold ${
-                      transaction.type === "credit" ? "text-green" : "text-red-400"
-                    }`}>
-                      {transaction.type === "credit" ? "+" : "-"}{transaction.amount}
-                    </span>
-                  </td>
-                  <td className="py-4 px-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(transaction.status)}`}>
-                      {transaction.status}
-                    </span>
-                  </td>
-                  <td className="py-4 px-4 text-gray-400">
-                    {transaction.date}
-                  </td>
-                  <td className="py-4 px-4 text-right">
-                    <button className="text-gray-400 hover:text-white">
-                      <Eye className="w-4 h-4" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Payout Settings */}
-      <div className="mt-8 bg-surface border border-border rounded-lg p-6">
-        <h3 className="text-lg font-serif font-semibold mb-4">Payout Settings</h3>
-        
-        <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              Bank Account
-            </label>
-            <div className="bg-surface-2 border border-border rounded-lg p-4">
-              <p className="font-medium">Wells Fargo ****1234</p>
-              <p className="text-sm text-gray-400">Primary account</p>
+      {/* Transactions Table */}
+      <div className="card">
+        <div className="card-content">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-slate-800">
+              Transaction History
+            </h3>
+            <div className="flex items-center gap-2">
+              <select className="form-input text-sm py-2">
+                <option>All transactions</option>
+                <option>Payments sent</option>
+                <option>Deposits</option>
+                <option>Fees</option>
+              </select>
+              <select className="form-input text-sm py-2">
+                <option>Last 30 days</option>
+                <option>Last 3 months</option>
+                <option>Last year</option>
+              </select>
             </div>
           </div>
           
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              Payout Schedule
-            </label>
-            <select className="w-full bg-surface-2 border border-border rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent">
-              <option>Weekly (Mondays)</option>
-              <option>Bi-weekly</option>
-              <option>Monthly</option>
-              <option>Manual</option>
-            </select>
+          <div className="overflow-x-auto">
+            <table className="min-w-full">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">Date</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">Description</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">Amount</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">Status</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {mockTransactions.map((transaction) => (
+                  <tr key={transaction.id} className="border-b border-gray-200 last:border-b-0 hover:bg-gray-50">
+                    <td className="py-4 px-4 text-sm text-gray-600">
+                      {new Date(transaction.date).toLocaleDateString()}
+                    </td>
+                    <td className="py-4 px-4">
+                      <div className="font-medium text-slate-800">
+                        {transaction.description}
+                      </div>
+                      <div className="text-xs text-gray-400">
+                        ID: {transaction.id}
+                      </div>
+                    </td>
+                    <td className="py-4 px-4">
+                      <div className={`font-medium ${
+                        transaction.amount > 0 ? "text-green-600" : "text-red-600"
+                      }`}>
+                        {transaction.amount > 0 ? "+" : ""}${Math.abs(transaction.amount).toLocaleString()}
+                      </div>
+                    </td>
+                    <td className="py-4 px-4">
+                      <div className="flex items-center gap-2">
+                        {getStatusIcon(transaction.status)}
+                        <span className={getStatusBadge(transaction.status)}>
+                          {transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="py-4 px-4">
+                      <div className="flex items-center gap-2">
+                        <button className="p-1 text-gray-400 hover:text-slate-800 transition-colors">
+                          <Download className="w-4 h-4" />
+                        </button>
+                        <button className="p-1 text-gray-400 hover:text-slate-800 transition-colors">
+                          <ExternalLink className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        </div>
-
-        <div className="mt-6 flex space-x-4">
-          <button className="bg-accent text-white px-6 py-3 rounded-lg font-semibold hover:bg-accent/90 transition-colors">
-            Request Payout
-          </button>
-          <button className="border border-border text-gray-300 px-6 py-3 rounded-lg font-semibold hover:bg-surface-2 transition-colors">
-            Update Settings
-          </button>
+          
+          <div className="mt-6 flex items-center justify-between">
+            <div className="text-sm text-gray-400">
+              Showing 8 of 45 transactions
+            </div>
+            <div className="flex items-center gap-2">
+              <button className="btn-secondary px-3 py-2 text-sm">
+                Previous
+              </button>
+              <button className="btn-secondary px-3 py-2 text-sm">
+                Next
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

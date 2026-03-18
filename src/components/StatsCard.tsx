@@ -1,41 +1,58 @@
-import { TrendingUp, TrendingDown } from "lucide-react";
+import { LucideIcon, TrendingUp, TrendingDown } from "lucide-react";
 
 interface StatsCardProps {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
+  title: string;
+  value: string | number;
+  icon: LucideIcon;
+  iconColor: string;
+  iconBgColor: string;
   trend?: {
-    value: string;
-    positive: boolean;
+    value: number;
+    isPositive: boolean;
   };
 }
 
-export default function StatsCard({ icon, label, value, trend }: StatsCardProps) {
+export default function StatsCard({ 
+  title, 
+  value, 
+  icon: Icon, 
+  iconColor, 
+  iconBgColor,
+  trend 
+}: StatsCardProps) {
   return (
-    <div className="bg-surface border border-border rounded-lg p-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <div className="text-accent">
-            {icon}
+    <div className="stats-card">
+      <div className="card-content">
+        <div className="flex items-start justify-between">
+          {/* Icon and Content */}
+          <div className="flex-1">
+            <div className={`w-12 h-12 ${iconBgColor} rounded-full flex items-center justify-center mb-4`}>
+              <Icon className={`w-6 h-6 ${iconColor}`} />
+            </div>
+            <div className="text-3xl font-bold text-slate-800 mb-1">
+              {value}
+            </div>
+            <div className="text-sm text-gray-600">
+              {title}
+            </div>
           </div>
-          <div>
-            <p className="text-sm text-gray-400">{label}</p>
-            <p className="text-2xl font-semibold">{value}</p>
-          </div>
+
+          {/* Trend Indicator */}
+          {trend && (
+            <div className={`flex items-center gap-1 px-2 py-1 rounded-full ${
+              trend.isPositive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+            }`}>
+              {trend.isPositive ? (
+                <TrendingUp className="w-3 h-3" />
+              ) : (
+                <TrendingDown className="w-3 h-3" />
+              )}
+              <span className="text-xs font-medium">
+                {Math.abs(trend.value)}%
+              </span>
+            </div>
+          )}
         </div>
-        
-        {trend && (
-          <div className={`flex items-center space-x-1 text-sm ${
-            trend.positive ? 'text-green' : 'text-red-400'
-          }`}>
-            {trend.positive ? (
-              <TrendingUp className="w-4 h-4" />
-            ) : (
-              <TrendingDown className="w-4 h-4" />
-            )}
-            <span>{trend.value}</span>
-          </div>
-        )}
       </div>
     </div>
   );
