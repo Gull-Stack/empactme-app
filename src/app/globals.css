@@ -113,3 +113,40 @@ body {
 .badge-info { background-color: #dbeafe; color: #1e40af; }
 .badge-purple { background-color: var(--color-brand-purple-light); color: var(--color-brand-purple-dark); }
 .badge-gray { background-color: #f1f5f9; color: #475569; }
+
+/* Sidebar nav items */
+.sidebar-nav-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  transition: background-color 0.15s, color 0.15s;
+}
+.sidebar-nav-item:hover {
+  background-color: var(--color-surface-tertiary);
+  color: var(--color-text-primary);
+}
+.sidebar-nav-item.active {
+  background-color: var(--color-brand-purple-light);
+  color: var(--color-brand-purple);
+  font-weight: 600;
+}
+
+/* Status badges for campaign table */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 9999px;
+}
+.status-badge.active { background-color: #d1fae5; color: #065f46; }
+.status-badge.pending { background-color: #fef3c7; color: #92400e; }
+.status-badge.completed { background-color: #dbeafe; color: #1e40af; }
+.status-badge.cancelled { background-color: #fee2e2; color: #991b1b; }
