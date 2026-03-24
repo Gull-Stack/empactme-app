@@ -2,106 +2,28 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Plus, Search, Grid, List, Calendar, DollarSign } from "lucide-react";
+import { Plus, Search, Grid, List, Calendar } from "lucide-react";
+import { campaigns, filterCampaigns, formatImpressions } from "@/lib/campaigns-data";
+import type { Campaign } from "@/lib/campaigns-data";
 
 export default function CampaignsPage() {
   const [activeTab, setActiveTab] = useState("all");
   const [viewMode, setViewMode] = useState("grid");
 
+  const activeCt = campaigns.filter((c) => c.status === "active").length;
+  const pendingCt = campaigns.filter((c) => c.status === "pending").length;
+  const completedCt = campaigns.filter((c) => c.status === "completed").length;
+
   const tabs = [
-    { id: "all", label: "All Campaigns", count: 24 },
-    { id: "active", label: "Active", count: 8 },
-    { id: "pending", label: "Pending", count: 5 },
-    { id: "completed", label: "Completed", count: 11 },
+    { id: "all", label: "All Campaigns", count: campaigns.length },
+    { id: "active", label: "Active", count: activeCt },
+    { id: "pending", label: "Pending", count: pendingCt },
+    { id: "completed", label: "Completed", count: completedCt },
   ];
 
-  const mockCampaigns = [
-    {
-      id: 1,
-      name: "Summer Fashion Collection",
-      influencer: "Sarah Johnson",
-      status: "active",
-      startDate: "2024-03-01",
-      endDate: "2024-04-15",
-      budget: 5000,
-      spent: 3200,
-      impressions: 127000,
-      engagement: 4.2,
-      progress: 64
-    },
-    {
-      id: 2,
-      name: "Tech Product Launch",
-      influencer: "Mike Chen",
-      status: "pending",
-      startDate: "2024-03-15",
-      endDate: "2024-04-30",
-      budget: 3200,
-      spent: 0,
-      impressions: 0,
-      engagement: 0,
-      progress: 0
-    },
-    {
-      id: 3,
-      name: "Travel Adventure Series",
-      influencer: "Emma Davis",
-      status: "completed",
-      startDate: "2024-02-01",
-      endDate: "2024-02-29",
-      budget: 2800,
-      spent: 2800,
-      impressions: 156000,
-      engagement: 5.1,
-      progress: 100
-    },
-    {
-      id: 4,
-      name: "Fitness Challenge",
-      influencer: "Alex Rodriguez",
-      status: "active",
-      startDate: "2024-03-10",
-      endDate: "2024-05-10",
-      budget: 4500,
-      spent: 1800,
-      impressions: 203000,
-      engagement: 3.8,
-      progress: 40
-    },
-    {
-      id: 5,
-      name: "Food & Recipe Content",
-      influencer: "Lisa Thompson",
-      status: "completed",
-      startDate: "2024-01-15",
-      endDate: "2024-02-15",
-      budget: 1900,
-      spent: 1900,
-      impressions: 98000,
-      engagement: 6.2,
-      progress: 100
-    },
-    {
-      id: 6,
-      name: "Beauty Product Review",
-      influencer: "Jessica Park",
-      status: "pending",
-      startDate: "2024-04-01",
-      endDate: "2024-05-01",
-      budget: 3500,
-      spent: 0,
-      impressions: 0,
-      engagement: 0,
-      progress: 0
-    }
-  ];
+  const filteredCampaigns = filterCampaigns(activeTab);
 
-  const filteredCampaigns = mockCampaigns.filter(campaign => {
-    if (activeTab === "all") return true;
-    return campaign.status === activeTab;
-  });
-
-  const CampaignCard = ({ campaign }: { campaign: any }) => (
+  const CampaignCard = ({ campaign }: { campaign: Campaign }) => (
     <div className="card">
       <div className="card-content">
         <div className="flex items-start justify-between mb-4">
@@ -109,9 +31,7 @@ export default function CampaignsPage() {
             <h3 className="text-lg font-semibold text-slate-800 mb-1">
               {campaign.name}
             </h3>
-            <p className="text-sm text-gray-600">
-              with {campaign.influencer}
-            </p>
+            <p className="text-sm text-gray-600">with {campaign.influencer}</p>
           </div>
           <span className={`status-badge ${campaign.status}`}>
             {campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1)}
@@ -123,7 +43,8 @@ export default function CampaignsPage() {
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4 text-gray-400" />
               <span className="text-gray-600">
-                {new Date(campaign.startDate).toLocaleDateString()} - {new Date(campaign.endDate).toLocaleDateString()}
+                {new Date(campaign.startDate).toLocaleDateString()} -{" "}
+                {new Date(campaign.endDate).toLocaleDateString()}
               </span>
             </div>
           </div>
@@ -138,7 +59,7 @@ export default function CampaignsPage() {
             <div>
               <div className="text-gray-400">Impressions</div>
               <div className="font-medium text-slate-800">
-                {campaign.impressions > 0 ? `${(campaign.impressions / 1000).toFixed(0)}K` : "0"}
+                {formatImpressions(campaign.impressions)}
               </div>
             </div>
           </div>
@@ -147,25 +68,33 @@ export default function CampaignsPage() {
             <div>
               <div className="flex justify-between items-center mb-2 text-sm">
                 <span className="text-gray-400">Progress</span>
-                <span className="font-medium text-slate-800">{campaign.progress}%</span>
+                <span className="font-medium text-slate-800">
+                  {campaign.progress}%
+                </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <div 
+                <div
                   className="bg-brand-purple h-2 rounded-full transition-all duration-500"
                   style={{ width: `${campaign.progress}%` }}
-                ></div>
+                />
               </div>
             </div>
           )}
         </div>
 
         <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-200">
-          <button className="btn-primary flex-1 py-2">
+          <Link
+            href={`/dashboard/campaigns/${campaign.id}`}
+            className="btn-primary flex-1 py-2 text-center"
+          >
             View Details
-          </button>
-          <button className="btn-secondary px-4 py-2">
+          </Link>
+          <Link
+            href={`/dashboard/campaigns/${campaign.id}`}
+            className="btn-secondary px-4 py-2 text-center"
+          >
             Edit
-          </button>
+          </Link>
         </div>
       </div>
     </div>
@@ -176,14 +105,15 @@ export default function CampaignsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-800 mb-2">
-            Campaigns
-          </h1>
+          <h1 className="text-3xl font-bold text-slate-800 mb-2">Campaigns</h1>
           <p className="text-gray-600">
             Manage and track your influencer marketing campaigns
           </p>
         </div>
-        <Link href="/dashboard/campaigns/new" className="btn-primary px-4 py-2 flex items-center gap-2">
+        <Link
+          href="/dashboard/campaigns/new"
+          className="btn-primary px-4 py-2 flex items-center gap-2"
+        >
           <Plus className="w-4 h-4" />
           New Campaign
         </Link>
@@ -263,24 +193,44 @@ export default function CampaignsPage() {
               <table className="min-w-full">
                 <thead>
                   <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-4 font-medium text-gray-600">Campaign</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-600">Influencer</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-600">Status</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-600">Budget</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-600">Progress</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-600">Actions</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">
+                      Campaign
+                    </th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">
+                      Influencer
+                    </th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">
+                      Status
+                    </th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">
+                      Budget
+                    </th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">
+                      Progress
+                    </th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredCampaigns.map((campaign) => (
-                    <tr key={campaign.id} className="border-b border-gray-200 last:border-b-0">
+                    <tr
+                      key={campaign.id}
+                      className="border-b border-gray-200 last:border-b-0"
+                    >
                       <td className="py-4 px-4">
-                        <div className="font-medium text-slate-800">{campaign.name}</div>
+                        <div className="font-medium text-slate-800">
+                          {campaign.name}
+                        </div>
                       </td>
-                      <td className="py-4 px-4 text-gray-600">{campaign.influencer}</td>
+                      <td className="py-4 px-4 text-gray-600">
+                        {campaign.influencer}
+                      </td>
                       <td className="py-4 px-4">
                         <span className={`status-badge ${campaign.status}`}>
-                          {campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1)}
+                          {campaign.status.charAt(0).toUpperCase() +
+                            campaign.status.slice(1)}
                         </span>
                       </td>
                       <td className="py-4 px-4 text-gray-600">
@@ -289,18 +239,30 @@ export default function CampaignsPage() {
                       <td className="py-4 px-4">
                         <div className="flex items-center gap-3">
                           <div className="w-16 bg-gray-200 rounded-full h-2">
-                            <div 
+                            <div
                               className="bg-brand-purple h-2 rounded-full"
                               style={{ width: `${campaign.progress}%` }}
-                            ></div>
+                            />
                           </div>
-                          <span className="text-sm text-gray-600">{campaign.progress}%</span>
+                          <span className="text-sm text-gray-600">
+                            {campaign.progress}%
+                          </span>
                         </div>
                       </td>
                       <td className="py-4 px-4">
                         <div className="flex items-center gap-2">
-                          <button className="btn-primary px-3 py-1 text-sm">View</button>
-                          <button className="btn-secondary px-3 py-1 text-sm">Edit</button>
+                          <Link
+                            href={`/dashboard/campaigns/${campaign.id}`}
+                            className="btn-primary px-3 py-1 text-sm"
+                          >
+                            View
+                          </Link>
+                          <Link
+                            href={`/dashboard/campaigns/${campaign.id}`}
+                            className="btn-secondary px-3 py-1 text-sm"
+                          >
+                            Edit
+                          </Link>
                         </div>
                       </td>
                     </tr>

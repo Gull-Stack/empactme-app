@@ -60,10 +60,10 @@ export default function Sidebar() {
           </div>
           <div className="flex-1 min-w-0">
             <div className="text-sm font-medium text-slate-800 truncate">
-              John Doe
+              Demo User
             </div>
             <div className="text-xs text-gray-400 truncate">
-              john@company.com
+              demo@empactme.com
             </div>
           </div>
         </div>

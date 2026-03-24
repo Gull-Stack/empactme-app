@@ -41,7 +41,7 @@ export default function DashboardLayout({
                 <User className="w-4 h-4 text-brand-purple" />
               </div>
               <div className="hidden md:block text-sm">
-                <div className="font-medium text-slate-800">John Doe</div>
+                <div className="font-medium text-slate-800">Demo User</div>
                 <div className="text-gray-400">Company Admin</div>
               </div>
               <ChevronDown className="w-4 h-4 text-gray-400" />
