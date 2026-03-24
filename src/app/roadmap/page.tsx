@@ -1,5 +1,6 @@
-import { CheckCircle, Clock, Circle, ArrowRight } from "lucide-react";
+import { CheckCircle, Clock, Circle, ArrowRight, Calendar } from "lucide-react";
 import { roadmapData, getSummaryStats } from "@/lib/roadmap-data";
+import type { Phase } from "@/lib/roadmap-data";
 import Navbar from "@/components/Navbar";
 
 export default function RoadmapPage() {
@@ -19,18 +20,45 @@ export default function RoadmapPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "done":
-        return <span className="status-badge complete">Complete</span>;
+        return <span className="status-badge completed">Complete</span>;
       case "in-progress":
-        return <span className="status-badge in-progress">In Progress</span>;
+        return <span className="status-badge active">In Progress</span>;
       default:
-        return <span className="status-badge planned">Planned</span>;
+        return <span className="status-badge pending">Planned</span>;
     }
+  };
+
+  const getTargetBlock = (phase: Phase) => {
+    if (!phase.targetDate) return null;
+    const isActive = phase.status === "in-progress";
+    return (
+      <div
+        className={`mt-6 p-4 rounded-lg ${
+          isActive ? "bg-brand-purple-light" : "bg-gray-100"
+        }`}
+      >
+        <div className="flex items-center gap-2">
+          <Calendar
+            className={`w-4 h-4 ${
+              isActive ? "text-brand-purple" : "text-gray-500"
+            }`}
+          />
+          <span
+            className={`text-sm font-medium ${
+              isActive ? "text-brand-purple" : "text-gray-600"
+            }`}
+          >
+            Target: {phase.targetDate}
+          </span>
+        </div>
+      </div>
+    );
   };
 
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
-      
+
       <div className="py-12 px-6">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
@@ -39,7 +67,9 @@ export default function RoadmapPage() {
               Product Roadmap
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Track our progress as we build the future of influencer marketing. Here's what we're working on and what's coming next.
+              Track our progress as we build the future of influencer-commerce.
+              Here&apos;s what we&apos;re working on and what&apos;s coming
+              next.
             </p>
           </div>
 
@@ -47,25 +77,33 @@ export default function RoadmapPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
             <div className="card">
               <div className="card-content text-center">
-                <div className="text-3xl font-bold text-green-600 mb-2">{stats.completed}</div>
+                <div className="text-3xl font-bold text-green-600 mb-2">
+                  {stats.completed}
+                </div>
                 <div className="text-sm text-gray-600">Completed</div>
               </div>
             </div>
             <div className="card">
               <div className="card-content text-center">
-                <div className="text-3xl font-bold text-brand-purple mb-2">{stats.inProgress}</div>
+                <div className="text-3xl font-bold text-brand-purple mb-2">
+                  {stats.inProgress}
+                </div>
                 <div className="text-sm text-gray-600">In Progress</div>
               </div>
             </div>
             <div className="card">
               <div className="card-content text-center">
-                <div className="text-3xl font-bold text-gray-600 mb-2">{stats.planned}</div>
+                <div className="text-3xl font-bold text-gray-600 mb-2">
+                  {stats.planned}
+                </div>
                 <div className="text-sm text-gray-600">Planned</div>
               </div>
             </div>
             <div className="card">
               <div className="card-content text-center">
-                <div className="text-3xl font-bold text-brand-purple mb-2">{stats.overall}%</div>
+                <div className="text-3xl font-bold text-brand-purple mb-2">
+                  {stats.overall}%
+                </div>
                 <div className="text-sm text-gray-600">Overall Progress</div>
               </div>
             </div>
@@ -73,12 +111,12 @@ export default function RoadmapPage() {
 
           {/* Roadmap Phases */}
           <div className="space-y-8">
-            {roadmapData.map((phase, index) => (
+            {roadmapData.map((phase) => (
               <div key={phase.id} className="card">
                 <div className="card-content">
                   {/* Phase Header */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-4">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                    <div className="flex items-center gap-4 flex-wrap">
                       <h2 className="text-2xl font-bold text-slate-800">
                         {phase.name}
                       </h2>
@@ -95,10 +133,10 @@ export default function RoadmapPage() {
                   {/* Progress Bar */}
                   <div className="mb-6">
                     <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div 
+                      <div
                         className="bg-brand-purple h-2 rounded-full transition-all duration-500"
                         style={{ width: `${phase.progress}%` }}
-                      ></div>
+                      />
                     </div>
                   </div>
 
@@ -107,42 +145,42 @@ export default function RoadmapPage() {
 
                   {/* Tasks List */}
                   <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-slate-800 mb-4">Tasks & Features</h3>
+                    <h3 className="text-lg font-semibold text-slate-800 mb-4">
+                      Tasks & Features
+                    </h3>
                     {phase.tasks.map((task) => (
-                      <div key={task.id} className="flex items-center gap-3 p-3 rounded-lg bg-gray-50">
-                        {getStatusIcon(task.status)}
-                        <span className={`flex-1 ${task.status === 'done' ? 'text-gray-600 line-through' : 'text-slate-800'}`}>
-                          {task.name}
-                        </span>
-                        {task.status === 'in-progress' && (
-                          <ArrowRight className="w-4 h-4 text-brand-purple" />
+                      <div
+                        key={task.id}
+                        className="flex items-start gap-3 p-3 rounded-lg bg-gray-50"
+                      >
+                        <div className="mt-0.5">
+                          {getStatusIcon(task.status)}
+                        </div>
+                        <div className="flex-1">
+                          <span
+                            className={`${
+                              task.status === "done"
+                                ? "text-gray-600 line-through"
+                                : "text-slate-800"
+                            }`}
+                          >
+                            {task.name}
+                          </span>
+                          {task.description && (
+                            <p className="text-xs text-gray-400 mt-1">
+                              {task.description}
+                            </p>
+                          )}
+                        </div>
+                        {task.status === "in-progress" && (
+                          <ArrowRight className="w-4 h-4 text-brand-purple mt-0.5" />
                         )}
                       </div>
                     ))}
                   </div>
 
-                  {/* Target Dates */}
-                  {phase.status === 'in-progress' && (
-                    <div className="mt-6 p-4 bg-brand-purple-light rounded-lg">
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4 text-brand-purple" />
-                        <span className="text-sm font-medium text-brand-purple">
-                          Target Completion: Q2 2024
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                  
-                  {phase.status === 'planned' && (
-                    <div className="mt-6 p-4 bg-gray-100 rounded-lg">
-                      <div className="flex items-center gap-2">
-                        <Circle className="w-4 h-4 text-gray-500" />
-                        <span className="text-sm font-medium text-gray-600">
-                          Estimated Start: Q3 2024
-                        </span>
-                      </div>
-                    </div>
-                  )}
+                  {/* Target Date */}
+                  {getTargetBlock(phase)}
                 </div>
               </div>
             ))}
@@ -156,7 +194,8 @@ export default function RoadmapPage() {
                   Want to Shape Our Roadmap?
                 </h3>
                 <p className="text-gray-600 mb-6">
-                  Join our community and help us prioritize features that matter most to your business.
+                  Join our community and help us prioritize features that matter
+                  most to your business.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <button className="btn-primary px-6 py-3">
