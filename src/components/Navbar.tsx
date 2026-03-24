@@ -8,23 +8,31 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center">
-              <span className="text-2xl font-bold text-brand-purple">EmpactMe</span>
+              <span className="text-2xl font-bold text-brand-purple">
+                EmpactMe
+              </span>
             </Link>
           </div>
 
           {/* Center Navigation */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
-              <Link href="/roadmap" className="text-gray-600 hover:text-slate-800 font-medium transition-colors">
+              <Link
+                href="/#opportunities"
+                className="text-gray-600 hover:text-slate-800 font-medium transition-colors"
+              >
+                Opportunities
+              </Link>
+              <Link
+                href="/roadmap"
+                className="text-gray-600 hover:text-slate-800 font-medium transition-colors"
+              >
                 Roadmap
               </Link>
-              <Link href="/features" className="text-gray-600 hover:text-slate-800 font-medium transition-colors">
-                Features
-              </Link>
-              <Link href="/pricing" className="text-gray-600 hover:text-slate-800 font-medium transition-colors">
-                Pricing
-              </Link>
-              <Link href="/about" className="text-gray-600 hover:text-slate-800 font-medium transition-colors">
+              <Link
+                href="/about"
+                className="text-gray-600 hover:text-slate-800 font-medium transition-colors"
+              >
                 About
               </Link>
             </div>
